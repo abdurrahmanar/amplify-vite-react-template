@@ -14,6 +14,7 @@ const schema = a.schema({
       createdUserId: a.string(),
     })
     .authorization((allow) => [allow.publicApiKey()]),
+  User: a.model({ name: a.string() }).authorization((allow) => [allow.authenticated()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
