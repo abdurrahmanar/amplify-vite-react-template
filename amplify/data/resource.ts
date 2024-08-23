@@ -1,4 +1,5 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { Connection } from "aws-cdk-lib/aws-events";
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -11,10 +12,11 @@ const schema = a.schema({
     .model({
       content: a.string(),
       title: a.string(),
-      createdUserId: a.string(),
+      userId: a.id() ,
+      user:a.belongsTo("User","userId"),
     })
     .authorization((allow) => [allow.publicApiKey()]),
-  User: a.model({ name: a.string() }).authorization((allow) => [allow.authenticated()]),
+  User: a.model({ name: a.string(), todos:a.hasMany("Todo","userId") }).authorization((allow) => [allow.authenticated()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
